@@ -1,4 +1,6 @@
 var express = require("express");
+const { Sequelize } = require("sequelize");
+
 var app = express();
 const router = express.Router();
 var bodyParser = require("body-parser");
@@ -22,3 +24,5 @@ var server = app.listen(3000, function () {
     port
   );
 });
+
+
