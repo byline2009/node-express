@@ -9,7 +9,9 @@ exports.getUsers = async (req, res, next) => {
   //   type: QueryTypes.SELECT,
   // });
 
-  db.User.findAll({})
+  db.User.findAll({
+    include: { model: db.Note, as: "notes" },
+  })
     .then((users) => {
       res.status(200).json({ users: users });
     })
@@ -22,11 +24,18 @@ exports.createUser = (req, res, next) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const email = req.body.email;
-  db.User.create({
-    firstName: firstName,
-    lastName: lastName,
-    email: email,
-  })
+  const notes = req.body.notes;
+  db.User.create(
+    {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      notes: notes,
+    },
+    {
+      include: [{ model: db.Note, as: "notes" }],
+    }
+  )
     .then((result) => {
       console.log("Created User");
       res.status(201).json({
