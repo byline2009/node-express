@@ -10,7 +10,14 @@ exports.getUsers = async (req, res, next) => {
   // });
 
   db.User.findAll({
-    include: { model: db.Note, as: "notes" },
+    attributes: ["id", "firstName", "lastName", "email"],
+    include: [
+      {
+        model: db.Note,
+        as: "notes",
+        attributes: ["id", "name", "description"],
+      },
+    ],
   })
     .then((users) => {
       res.status(200).json({ users: users });
